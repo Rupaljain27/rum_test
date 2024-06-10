@@ -13,7 +13,7 @@ app.use(express.static('public'));
 app.use('/', indexRouter);
 app.use('/second', secondRouter);
 
-app.listen(3000, () => {
-    console.log('Running on port 3000')
+app.listen(2024, () => {
+    console.log('Running on port 2024')
 });
 
