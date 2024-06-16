@@ -8,5 +8,17 @@
         <h1><%= title%></h1>
         <p>Welcome to page 2</p>
         <a href="/">Go back to index</a>
+        <button id="testBtn">Press me!</button>
+
+        <script>
+            const btn = document.getElementById("testBtn")
+
+            btn.addEventListener('click', function() {
+                fetch('/request', {method: 'POST'})
+                .then(response => response.text())
+                .then(text => console.log(text))
+            })
+        </script>
+
     </body>
 </html>
