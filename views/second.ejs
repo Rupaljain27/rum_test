@@ -22,12 +22,13 @@
     </head>
     
     <body>
+        <script type="text/javascript" src="../instrumentation.js"></script>
         <h1><%= title%></h1>
         <p>Welcome to page 2</p>
         <a href="/">Go back to index</a>
-        <button id="testBtn">Press me!</button>
+        <button class="track_btn" id="page2_btn">Press me!</button>
 
-        <script>
+        <!-- <script>
             const btn = document.getElementById("testBtn")
 
             btn.addEventListener('click', function() {
@@ -44,7 +45,7 @@
                     }
                 })
             })
-        </script>
+        </script> -->
 
     </body>
 </html>
