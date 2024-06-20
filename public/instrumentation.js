@@ -1,4 +1,4 @@
-import AwsRum from 'aws-rum-web';
+import { AwsRum } from 'aws-rum-web';
 
 try {
   const config = {
