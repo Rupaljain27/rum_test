@@ -11,6 +11,7 @@ app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static('public'));
+app.use("/aws-rum-web", express.static("node_modules/aws-rum-web"));
 
 app.use('/', indexRouter);
 app.use('/second', secondRouter);
