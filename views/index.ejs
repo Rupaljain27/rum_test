@@ -37,41 +37,33 @@
   <button class="track_btn" id="page1_btn2">Also Tracked</button>
   <button id="page1_nottracked">Not tracked</button>
   <script>
-    const btn = document.getElementById("page1_btn")
-
-    btn.addEventListener('click', function () {
-      // fetch('/request', {method: 'POST'})
-      // .then(response => response.text())
-      // .then(text => console.log(text))
-      cwr("recordEvent", {
-        type: 'first_page_button',
-        data: {
-          current_url: "/request-button",
-          user_interaction: {
-            interaction_1: "click"
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const btn = document.getElementById("page1_btn");
+      btn.addEventListener('click', function () {
+        cwr("recordEvent", {
+          type: 'first_page_button',
+          data: {
+            current_url: "/request-button",
+            user_interaction: {
+              interaction_1: "click"
+            }
           }
-        }
-      })
-    })
-    const btn2 = document.getElementById("page1_btn2")
+        });
+      });
 
-    btn2.addEventListener('click', function () {
-      // fetch('/request', {method: 'POST'})
-      // .then(response => response.text())
-      // .then(text => console.log(text))
-      cwr("recordEvent", {
-        type: 'first_page_button',
-        data: {
-          current_url: "/also-tracked",
-          user_interaction: {
-            interaction_1: "click"
+      const btn2 = document.getElementById("page1_btn2");
+      btn2.addEventListener('click', function () {
+        cwr("recordEvent", {
+          type: 'first_page_button',
+          data: {
+            current_url: "/also-tracked",
+            user_interaction: {
+              interaction_1: "click"
+            }
           }
-        }
-      })
-    })
-  </script>
-  <script>
-    window.addEventListener('load', () => {
+        });
+      });
+
       const clickButton = async (buttonId, times) => {
         for (let i = 0; i < times; i++) {
           document.getElementById(buttonId).click();
@@ -79,7 +71,6 @@
         }
       };
 
-      // clickButton('page1_btn', 5);
       const navigateAndClick = async () => {
         await clickButton('page1_btn', 5);
         window.location.href = '/second';
