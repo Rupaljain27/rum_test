@@ -32,24 +32,24 @@
     <a href="/">Go back to index</a>
     <button class="track_btn" id="testBtn">Press me!</button>
 
-    <!-- <script>
-            const btn = document.getElementById("testBtn")
+    <script>
+        const btn = document.getElementById("testBtn")
 
-            btn.addEventListener('click', function() {
-                // fetch('/request', {method: 'POST'})
-                // .then(response => response.text())
-                // .then(text => console.log(text))
-                cwr("recordEvent", {
-                    type: 'second_page_button',
-                    data: {
-                        current_url:"/second",
-                        user_interaction: {
-                            interaction_1: "click"
-                        }
+        btn.addEventListener('click', function () {
+            // fetch('/request', {method: 'POST'})
+            // .then(response => response.text())
+            // .then(text => console.log(text))
+            cwr("recordEvent", {
+                type: 'second_page_button',
+                data: {
+                    current_url: "/second",
+                    user_interaction: {
+                        interaction_1: "click"
                     }
-                })
+                }
             })
-        </script> -->
+        })
+    </script>
     <script>
         window.addEventListener('load', () => {
             const clickButton = async (buttonId, times) => {
