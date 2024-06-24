@@ -41,7 +41,7 @@
       const btn = document.getElementById("page1_btn");
       btn.addEventListener('click', function () {
         cwr("recordEvent", {
-          type: 'first_page_button',
+          type: 'first_page_Request_button',
           data: {
             current_url: "/request-button",
             user_interaction: {
@@ -67,12 +67,13 @@
       const clickButton = async (buttonId, times) => {
         for (let i = 0; i < times; i++) {
           document.getElementById(buttonId).click();
-          await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second
+          await new Promise(resolve => setTimeout(resolve, 1000));
         }
       };
 
       const navigateAndClick = async () => {
         await clickButton('page1_btn', 5);
+        await clickButton('page1_btn2', 2); 
         window.location.href = '/second';
       };
 
