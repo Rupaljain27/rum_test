@@ -1,33 +1,38 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title><%= title%></title>
-        <script>
-            (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement('script');z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);})(
-              'cwr',
-              '0d6c7d54-c31a-45b6-be39-118455091554',
-              '1.0.0',
-              'us-east-1',
-              'https://client.rum.us-east-1.amazonaws.com/1.16.1/cwr.js',
-              {
+
+<head>
+    <title>
+        <%= title%>
+    </title>
+    <script>
+        (function (n, i, v, r, s, c, x, z) { x = window.AwsRumClient = { q: [], n: n, i: i, v: v, r: r, c: c }; window[n] = function (c, p) { x.q.push({ c: c, p: p }); }; z = document.createElement('script'); z.async = true; z.src = s; document.head.insertBefore(z, document.head.getElementsByTagName('script')[0]); })(
+            'cwr',
+            '0d6c7d54-c31a-45b6-be39-118455091554',
+            '1.0.0',
+            'us-east-1',
+            'https://client.rum.us-east-1.amazonaws.com/1.16.1/cwr.js',
+            {
                 sessionSampleRate: 1,
                 identityPoolId: "us-east-1:1f4aa60b-6415-41ce-bb6b-1bb2aac9e2b0",
                 endpoint: "https://dataplane.rum.us-east-1.amazonaws.com",
-                telemetries: ["performance","http"],
+                telemetries: ["performance", "http"],
                 allowCookies: true,
                 enableXRay: true
-              }
-            );
-          </script>
-    </head>
-    
-    <body>
-        <h1><%= title%></h1>
-        <p>Welcome to page 2</p>
-        <a href="/">Go back to index</a>
-        <button class="track_btn" id="testBtn">Press me!</button>
+            }
+        );
+    </script>
+</head>
 
-        <!-- <script>
+<body>
+    <h1>
+        <%= title%>
+    </h1>
+    <p>Welcome to page 2</p>
+    <a href="/">Go back to index</a>
+    <button class="track_btn" id="testBtn">Press me!</button>
+
+    <!-- <script>
             const btn = document.getElementById("testBtn")
 
             btn.addEventListener('click', function() {
@@ -45,6 +50,25 @@
                 })
             })
         </script> -->
-    </body>
-    <script type="module" src="../instrumentation.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            const clickButton = async (buttonId, times) => {
+                for (let i = 0; i < times; i++) {
+                    document.getElementById(buttonId).click();
+                    await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second
+                }
+            };
+
+            // clickButton('testBtn', 5);
+            const navigateAndClick = async () => {
+                await clickButton('testBtn', 5);
+                window.location.href = '/';
+            };
+
+            navigateAndClick();
+        });
+    </script>
+</body>
+<script type="module" src="../instrumentation.js"></script>
+
 </html>
