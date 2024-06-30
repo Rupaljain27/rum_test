@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate  } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 
 import { AwsRum } from 'aws-rum-web';
 import { useEffect } from 'react';
@@ -121,15 +121,18 @@ function Home() {
       <h2>Home</h2>
       <button className="track_btn" id="home_button" data-event-type="home_button_click" onClick={() => navigate("/about")}>Go to About</button>
       <button className="track_btn" id="users_button" data-event-type="users_button_click" onClick={() => navigate("/users")}>Go to User</button>
-      {/* <Routes>
-        <Route exact path="*" element={<Home />} />
-      </Routes> */}
     </div>
   );
 }
 
 function About() {
-  return <h2>About</h2>;
+  const navigate = useNavigate();
+  return (
+    <div>
+      <h2>About</h2>
+      <button className="track_btn" id="home_button" data-event-type="home_button_click" onClick={() => navigate("/")}>Go to Home</button>
+    </div>
+  );
 }
 
 function Users() {
@@ -140,9 +143,6 @@ function Users() {
     <p><Link to="/user/2">User 2</Link></p>
     <p><Link to="/user/3">User 3</Link></p>
     <button className="track_btn" id="user_button" data-event-type="user_button_click" onClick={() => navigate("/")}>Go to Home</button>
-    {/* <Routes>
-      <Route exact path="/" element={<Home />} />
-    </Routes> */}
   </div>
     ;
 }
