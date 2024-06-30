@@ -97,8 +97,8 @@ const EventListener = () => {
 export default function App() {
   return (
     <Router>
-      <CloudWatchRUM />
-      <EventListener />
+      {/* <CloudWatchRUM /> */}
+      {/* <EventListener /> */}
       <div>
         <p><Link to="/" className="track_link" id="home_link">Home</Link></p>
         <p><Link to="/about" className="track_link" id="about_link">About</Link></p>
