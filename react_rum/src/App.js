@@ -117,10 +117,10 @@ function Home() {
   return (
     <div>
       <h2>Home</h2>
-      <button to="/" className="track_btn" id="home_button">Track Me</button>
-      <Routes>
+      <button className="track_btn" id="home_button">Track Me</button>
+      {/* <Routes>
         <Route exact path="*" element={<Home />} />
-      </Routes>
+      </Routes> */}
     </div>
   );
 }
@@ -135,10 +135,10 @@ function Users() {
     <p><Link to="/user/1">User 1</Link></p>
     <p><Link to="/user/2">User 2</Link></p>
     <p><Link to="/user/3">User 3</Link></p>
-    <button to="/" className="track_btn" id="users_button">Track Me in Users</button>
-    <Routes>
-      <Route exact path="*" element={<Home />} />
-    </Routes>
+    <button className="track_btn" id="users_button">Track Me in Users</button>
+    {/* <Routes>
+      <Route exact path="/" element={<Home />} />
+    </Routes> */}
   </div>
     ;
 }
