@@ -14,6 +14,7 @@
   "dependencies": {
     "aws-rum-web": "^1.18.0",
     "ejs": "^3.1.10",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "react-router-dom": "^6.24.0"
   }
 }
