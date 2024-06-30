@@ -62,8 +62,9 @@ const EventListener = () => {
     elements.forEach(element => {
       element.addEventListener("click", event => {
         console.log("Event captured:", event.target.id);
+        const eventType = event.target.getAttribute("data-event-type");
         if (awsRum) {
-          awsRum.recordEvent(event.target.id, {
+          awsRum.recordEvent(eventType, {
             user_interaction: {
               interaction_1: "click"
             }
@@ -100,9 +101,9 @@ export default function App() {
       {/* <CloudWatchRUM /> */}
       <EventListener />
       <div>
-        <p><Link to="/" className="track_link" id="home_link">Home</Link></p>
-        <p><Link to="/about" className="track_link" id="about_link">About</Link></p>
-        <p><Link to="/users" className="user_link" id="home_link">Users</Link></p>
+        <p><Link to="/" className="track_link" id="home_link" data-event-type="home_link_click">Home</Link></p>
+        <p><Link to="/about" className="track_link" id="about_link" data-event-type="about_link_click">About</Link></p>
+        <p><Link to="/users" className="user_link" id="home_link" data-event-type="users_link_click">Users</Link></p>
         <Routes>
           <Route path="/about" element={<About />} />
           <Route path="/users" element={<Users />} />
@@ -114,10 +115,12 @@ export default function App() {
 }
 
 function Home() {
+  const navigate = useNavigate();
   return (
     <div>
       <h2>Home</h2>
-      <button className="track_btn" id="home_button">Track Me</button>
+      <button className="track_btn" id="home_button" data-event-type="home_button_click" onClick={() => navigate("/about")}>Go to About</button>
+      <button className="track_btn" id="users_button" data-event-type="users_button_click" onClick={() => navigate("/users")}>Go to User</button>
       {/* <Routes>
         <Route exact path="*" element={<Home />} />
       </Routes> */}
@@ -130,12 +133,13 @@ function About() {
 }
 
 function Users() {
+  const navigate = useNavigate();
   return <div>
     <h2>Users</h2>
     <p><Link to="/user/1">User 1</Link></p>
     <p><Link to="/user/2">User 2</Link></p>
     <p><Link to="/user/3">User 3</Link></p>
-    <button className="track_btn" id="users_button">Track Me in Users</button>
+    <button className="track_btn" id="user_button" data-event-type="user_button_click" onClick={() => navigate("/")}>Go to Home</button>
     {/* <Routes>
       <Route exact path="/" element={<Home />} />
     </Routes> */}
