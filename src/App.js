@@ -67,7 +67,7 @@ const EventListener = ({ user }) => {
               },
               user_info: {
                 username: user.username,
-                sessionId: new Date().getTime() 
+                sessionId: user.sessionId // Use the session ID 
               }
             }
           });
@@ -92,16 +92,17 @@ const Login = ({ setUser }) => {
   const handleLogin = async () => {
     const user = users.find(u => u.username === username && u.password === password);
     if (user) {
-      let userId = localStorage.getItem('userId');
-      if (!userId) {
-        userId = uuidv4(); // Generate a unique user ID if not present
-        localStorage.setItem('userId', userId); // Store userId in local storage
+      const userKey = `user_${username}`;
+      let storedUser = JSON.parse(localStorage.getItem(userKey));
+      // let userId = localStorage.getItem('userId');
+      if (!storedUser) {
+        storedUser = { userId: uuidv4(), username: username };
+        localStorage.setItem(userKey, JSON.stringify(storedUser));
       }
-      // const userId = uuidv4(); // Generate a unique user ID
       const sessionId = uuidv4(); // Generate a unique session ID
-      setUser({ userId, username: user.username, sessionId });
+      setUser({ userId: storedUser.userId, username: user.username, sessionId });
 
-      console.log(`User logged in: ${user.username}, Session ID: ${sessionId}`);
+      console.log(`User logged in: ${user.username}, UserId: ${storedUser.userId}, Session ID: ${sessionId}`);
       navigate("/");
     } else {
       setError("Invalid username or password");
