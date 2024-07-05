@@ -57,12 +57,18 @@ const EventListener = ({ user }) => {
         const eventType = event.target.getAttribute("data-event-type");
         if (awsRum) {
           awsRum.recordEvent(eventType, {
-            user_interaction: {
-              interaction_1: "click"
-            },
-            user_info: {
-              username: user.username,
+            user_details: {
+              userId: user.userId,
               sessionId: user.sessionId
+            },
+            event_details: {
+              user_interaction: {
+                interaction_1: "click"
+              },
+              user_info: {
+                username: user.username,
+                sessionId: new Date().getTime() 
+              }
             }
           });
           console.log("Event recorded with AWS RUM:", event.target.id);
@@ -86,8 +92,23 @@ const Login = ({ setUser }) => {
   const handleLogin = async () => {
     const user = users.find(u => u.username === username && u.password === password);
     if (user) {
-      const sessionId = new Date().getTime(); // Simple session ID
-      setUser({ username: user.username, sessionId });
+      let userId = localStorage.getItem('userId');
+      if (!userId) {
+        userId = uuidv4(); // Generate a unique user ID if not present
+        localStorage.setItem('userId', userId); // Store userId in local storage
+      }
+      // const userId = uuidv4(); // Generate a unique user ID
+      const sessionId = uuidv4(); // Generate a unique session ID
+      setUser({ userId, username: user.username, sessionId });
+
+      // Set the user details in AWS RUM
+      if (awsRum) {
+        awsRum.setUser({
+          userId: userId,
+          sessionId: sessionId
+        });
+      }
+
       console.log(`User logged in: ${user.username}, Session ID: ${sessionId}`);
       navigate("/");
     } else {
@@ -122,14 +143,14 @@ export default function App() {
     const savedUser = JSON.parse(localStorage.getItem('user'));
     if (savedUser) {
       setUser(savedUser);
-      console.log(`User restored from local storage: ${savedUser.username}, Session ID: ${savedUser.sessionId}`);
+      console.log(`User restored from local storage: ${savedUser.username}, User ID: ${savedUser.userId}, Session ID: ${savedUser.sessionId}`);
     }
   }, []);
 
   useEffect(() => {
     if (user) {
       localStorage.setItem('user', JSON.stringify(user));
-      console.log(`User state updated: ${user.username}, Session ID: ${user.sessionId}`);
+      console.log(`User state updated: ${user.username}, User ID: ${user.userId}, Session ID: ${user.sessionId}`);
     } else {
       localStorage.removeItem('user');
     }
