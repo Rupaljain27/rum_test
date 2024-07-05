@@ -61,14 +61,12 @@ const EventListener = ({ user }) => {
               userId: user.userId,
               sessionId: user.sessionId
             },
-            event_details: {
-              user_interaction: {
-                interaction_1: "click"
-              },
-              user_info: {
-                username: user.username,
-                sessionId: user.sessionId // Use the session ID 
-              }
+            user_interaction: {
+              interaction_1: "click"
+            },
+            user_info: {
+              username: user.username,
+              sessionId: user.sessionId // Use the session ID 
             }
           });
           console.log("Event recorded with AWS RUM:", event.target.id);
@@ -161,6 +159,7 @@ export default function App() {
           </Routes>
         ) : (
           <>
+            <p>Welcome, {user.username}!</p>
             <p>
               <button onClick={() => {
                 console.log(`User logged out: ${user.username}, Session ID: ${user.sessionId}`);
