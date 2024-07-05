@@ -101,14 +101,6 @@ const Login = ({ setUser }) => {
       const sessionId = uuidv4(); // Generate a unique session ID
       setUser({ userId, username: user.username, sessionId });
 
-      // Set the user details in AWS RUM
-      if (awsRum) {
-        awsRum.setUser({
-          userId: userId,
-          sessionId: sessionId
-        });
-      }
-
       console.log(`User logged in: ${user.username}, Session ID: ${sessionId}`);
       navigate("/");
     } else {
