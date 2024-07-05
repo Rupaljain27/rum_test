@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
-
 import { AwsRum } from 'aws-rum-web';
-import { useEffect } from 'react';
+
 
 let awsRum = null;
 
@@ -32,30 +31,23 @@ try {
   console.error("Failed to initialize AWS RUM:", error);
 }
 
-const CloudWatchRUM = () => {
-  useEffect(() => {
-    (function (n, i, v, r, s, c, x, z) { x = window.AwsRumClient = { q: [], n: n, i: i, v: v, r: r, c: c }; window[n] = function (c, p) { x.q.push({ c: c, p: p }); }; z = document.createElement('script'); z.async = true; z.src = s; document.head.insertBefore(z, document.head.getElementsByTagName('script')[0]); })(
-      'cwr',
-      '0d6c7d54-c31a-45b6-be39-118455091554',
-      '1.0.0',
-      'us-east-1',
-      'https://client.rum.us-east-1.amazonaws.com/1.16.1/cwr.js',
-      {
-        sessionSampleRate: 1,
-        identityPoolId: "us-east-1:1f4aa60b-6415-41ce-bb6b-1bb2aac9e2b0",
-        endpoint: "https://dataplane.rum.us-east-1.amazonaws.com",
-        telemetries: ["performance", "http"],
-        allowCookies: true,
-        enableXRay: true
-      }
-    );
-    console.log("AWS RUM script injected");
-  }, []);
+// Simulate a text file with user data
+const usersData = `
+  test1, password123
+  test2, mypassword
+  admin, adminpassword
+`;
 
-  return null;
+const parseUsers = (data) => {
+  return data.trim().split('\n').map(line => {
+    const [username, password] = line.trim().split(', ');
+    return { username, password };
+  });
 };
 
-const EventListener = () => {
+const users = parseUsers(usersData);
+
+const EventListener = ({ user }) => {
   useEffect(() => {
     const elements = document.querySelectorAll(".track_btn, .track_link");
 
@@ -67,48 +59,110 @@ const EventListener = () => {
           awsRum.recordEvent(eventType, {
             user_interaction: {
               interaction_1: "click"
+            },
+            user_info: {
+              username: user.username,
+              sessionId: user.sessionId
             }
           });
           console.log("Event recorded with AWS RUM:", event.target.id);
         } else {
           console.error("AWS RUM is not initialized");
         }
-        // if (window.cwr) {
-        //   window.cwr("recordEvent", {
-        //     type: 'button_called',
-        //     data: {
-        //       current_url: "/",
-        //       user_interaction: {
-        //         interaction_1: "click"
-        //       }
-        //     }
-        //   });
-        //   console.log("cwr recordEvent called");
-        // } else {
-        //   console.error("cwr is not initialized");
-        // }
       });
     });
 
-  }, []);
+  }, [user]);
 
   return null;
 };
 
+const Login = ({ setUser }) => {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLogin = async () => {
+    const user = users.find(u => u.username === username && u.password === password);
+    if (user) {
+      const sessionId = new Date().getTime(); // Simple session ID
+      setUser({ username: user.username, sessionId });
+      console.log(`User logged in: ${user.username}, Session ID: ${sessionId}`);
+      navigate("/");
+    } else {
+      setError("Invalid username or password");
+    }
+  };
+
+  return (
+    <div>
+      <h2>Login</h2>
+      <input
+        type="text"
+        value={username}
+        onChange={e => setUsername(e.target.value)}
+        placeholder="Enter username"
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+        placeholder="Enter password"
+      />
+      <button onClick={handleLogin}>Login</button>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+    </div>
+  );
+};
+
 export default function App() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const savedUser = JSON.parse(localStorage.getItem('user'));
+    if (savedUser) {
+      setUser(savedUser);
+      console.log(`User restored from local storage: ${savedUser.username}, Session ID: ${savedUser.sessionId}`);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+      console.log(`User state updated: ${user.username}, Session ID: ${user.sessionId}`);
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [user]);
+
   return (
     <Router>
-      {/* <CloudWatchRUM /> */}
+      {user && <EventListener user={user} />}
       <EventListener />
       <div>
-        <p><Link to="/" className="track_link" id="home_link" data-event-type="home_link_click">Home</Link></p>
-        <p><Link to="/about" className="track_link" id="about_link" data-event-type="about_link_click">About</Link></p>
-        <p><Link to="/users" className="user_link" id="home_link" data-event-type="users_link_click">Users</Link></p>
-        <Routes>
-          <Route path="/about" element={<About />} />
-          <Route path="/users" element={<Users />} />
-          <Route exact path="/" element={<Home />} />
-        </Routes>
+        {!user ? (
+          <Routes>
+            <Route path="/login" element={<Login setUser={setUser} />} />
+            <Route path="*" element={<Login setUser={setUser} />} />
+          </Routes>
+        ) : (
+          <>
+            <p>
+              <button onClick={() => {
+                console.log(`User logged out: ${user.username}, Session ID: ${user.sessionId}`);
+                setUser(null);
+              }}>Logout</button>
+            </p>
+            <p><Link to="/" className="track_link" id="home_link" data-event-type="home_link_click">Home</Link></p>
+            <p><Link to="/about" className="track_link" id="about_link" data-event-type="about_link_click">About</Link></p>
+            <p><Link to="/users" className="user_link" id="home_link" data-event-type="users_link_click">Users</Link></p>
+            <Routes>
+              <Route path="/about" element={<About />} />
+              <Route path="/users" element={<Users />} />
+              <Route exact path="/" element={<Home />} />
+            </Routes>
+          </>
+        )}
       </div>
     </Router>
   )
@@ -139,9 +193,9 @@ function Users() {
   const navigate = useNavigate();
   return <div>
     <h2>Users</h2>
-    <p><Link to="/user/1">User 1</Link></p>
+    {/* <p><Link to="/user/1">User 1</Link></p>
     <p><Link to="/user/2">User 2</Link></p>
-    <p><Link to="/user/3">User 3</Link></p>
+    <p><Link to="/user/3">User 3</Link></p> */}
     <button className="track_btn" id="user_button" data-event-type="user_button_click" onClick={() => navigate("/")}>Go to Home</button>
   </div>
     ;
