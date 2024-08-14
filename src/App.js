@@ -5,41 +5,17 @@ import { v4 as uuidv4 } from 'uuid';
 
 let awsRum = null;
 
-// try {
-//   const config = {
-//     sessionSampleRate: 1,
-//     identityPoolId: "us-east-1:58f584b4-854a-4619-801d-7349b8b07f81",
-//     endpoint: "https://dataplane.rum.us-east-1.amazonaws.com",
-//     telemetries: ["performance","http"],
-//     allowCookies: true,
-//     enableXRay: true
-//   };
-
-//   const APPLICATION_ID = '0d6c7d54-c31a-45b6-be39-118455091554';
-//   const APPLICATION_VERSION = '1.0.0';
-//   const APPLICATION_REGION = 'us-east-1';
-
-//   awsRum = new AwsRum(
-//     APPLICATION_ID,
-//     APPLICATION_VERSION,
-//     APPLICATION_REGION,
-//     config
-//   );
-// } catch (error) {
-//   // Ignore errors thrown during CloudWatch RUM web client initialization
-// }
-
 try {
   const config = {
     sessionSampleRate: 1,
-    identityPoolId: "us-east-1:63cd1a94-90fb-4ab7-bd09-42fff98828fa",
+    identityPoolId: "us-east-1:58f584b4-854a-4619-801d-7349b8b07f81",
     endpoint: "https://dataplane.rum.us-east-1.amazonaws.com",
-    telemetries: ["performance","errors","http"],
+    telemetries: ["performance","http"],
     allowCookies: true,
     enableXRay: true
   };
 
-  const APPLICATION_ID = 'c9f65c3f-99c0-4541-ae3d-525379e54b0e';
+  const APPLICATION_ID = '0d6c7d54-c31a-45b6-be39-118455091554';
   const APPLICATION_VERSION = '1.0.0';
   const APPLICATION_REGION = 'us-east-1';
 
@@ -52,6 +28,31 @@ try {
 } catch (error) {
   // Ignore errors thrown during CloudWatch RUM web client initialization
 }
+
+// RezliantApp
+// try {
+//   const config = {
+//     sessionSampleRate: 1,
+//     identityPoolId: "us-east-1:63cd1a94-90fb-4ab7-bd09-42fff98828fa",
+//     endpoint: "https://dataplane.rum.us-east-1.amazonaws.com",
+//     telemetries: ["performance","errors","http"],
+//     allowCookies: true,
+//     enableXRay: true
+//   };
+
+//   const APPLICATION_ID = 'c9f65c3f-99c0-4541-ae3d-525379e54b0e';
+//   const APPLICATION_VERSION = '1.0.0';
+//   const APPLICATION_REGION = 'us-east-1';
+
+//   const awsRum = new AwsRum(
+//     APPLICATION_ID,
+//     APPLICATION_VERSION,
+//     APPLICATION_REGION,
+//     config
+//   );
+// } catch (error) {
+//   // Ignore errors thrown during CloudWatch RUM web client initialization
+// }
 
 // Simulate a text file with user data
 const usersData = `
