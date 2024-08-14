@@ -8,9 +8,9 @@ let awsRum = null;
 try {
   const config = {
     sessionSampleRate: 1,
-    identityPoolId: "us-east-1:1f4aa60b-6415-41ce-bb6b-1bb2aac9e2b0",
+    identityPoolId: "us-east-1:58f584b4-854a-4619-801d-7349b8b07f81",
     endpoint: "https://dataplane.rum.us-east-1.amazonaws.com",
-    telemetries: ["performance", "http"],
+    telemetries: ["performance","http"],
     allowCookies: true,
     enableXRay: true
   };
@@ -25,10 +25,8 @@ try {
     APPLICATION_REGION,
     config
   );
-  console.log("AWS RUM initialized:", awsRum);
 } catch (error) {
   // Ignore errors thrown during CloudWatch RUM web client initialization
-  console.error("Failed to initialize AWS RUM:", error);
 }
 
 // Simulate a text file with user data
