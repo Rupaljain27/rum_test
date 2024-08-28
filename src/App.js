@@ -8,7 +8,7 @@ let awsRum = null;
 try {
   const config = {
     sessionSampleRate: 1,
-    identityPoolId: "us-east-1:58f584b4-854a-4619-801d-7349b8b07f81",
+    identityPoolId: "us-east-1:d71e0a69-81ec-482c-b254-1eccc8316ee4",
     endpoint: "https://dataplane.rum.us-east-1.amazonaws.com",
     telemetries: ["performance","http"],
     allowCookies: true,
