@@ -5,12 +5,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 let awsRum = null;
 
+// RezliantApp
 try {
   const config = {
     sessionSampleRate: 1,
     identityPoolId: "us-east-1:d71e0a69-81ec-482c-b254-1eccc8316ee4",
     endpoint: "https://dataplane.rum.us-east-1.amazonaws.com",
-    telemetries: ["performance","http"],
+    telemetries: ["performance", "http"],
     allowCookies: true,
     enableXRay: true
   };
@@ -29,30 +30,6 @@ try {
   // Ignore errors thrown during CloudWatch RUM web client initialization
 }
 
-// RezliantApp
-// try {
-//   const config = {
-//     sessionSampleRate: 1,
-//     identityPoolId: "us-east-1:63cd1a94-90fb-4ab7-bd09-42fff98828fa",
-//     endpoint: "https://dataplane.rum.us-east-1.amazonaws.com",
-//     telemetries: ["performance","errors","http"],
-//     allowCookies: true,
-//     enableXRay: true
-//   };
-
-//   const APPLICATION_ID = 'c9f65c3f-99c0-4541-ae3d-525379e54b0e';
-//   const APPLICATION_VERSION = '1.0.0';
-//   const APPLICATION_REGION = 'us-east-1';
-
-//   const awsRum = new AwsRum(
-//     APPLICATION_ID,
-//     APPLICATION_VERSION,
-//     APPLICATION_REGION,
-//     config
-//   );
-// } catch (error) {
-//   // Ignore errors thrown during CloudWatch RUM web client initialization
-// }
 
 // Simulate a text file with user data
 const usersData = `
@@ -189,13 +166,13 @@ export default function App() {
                 setUser(null);
               }}>Logout</button>
             </p>
-            <p><Link to="/" className="track_link" id="home_link" data-event-type="home_link_click">Home</Link></p>
-            <p><Link to="/about" className="track_link" id="about_link" data-event-type="about_link_click">About</Link></p>
-            <p><Link to="/users" className="user_link" id="home_link" data-event-type="users_link_click">Users</Link></p>
+            <p><Link className="track_link" to="/home" id="home_link" data-event-type="home_link_click">Home</Link></p>
+            <p><Link className="track_link" to="/about" id="about_link" data-event-type="about_link_click">About</Link></p>
+            <p><Link className="track_link" to="/users" id="home_link" data-event-type="users_link_click">Users</Link></p>
             <Routes>
+              <Route exact path="/home" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/users" element={<Users />} />
-              <Route exact path="/" element={<Home />} />
             </Routes>
           </>
         )}
@@ -209,8 +186,8 @@ function Home() {
   return (
     <div>
       <h2>Home</h2>
-      <button className="track_btn" id="home_button" data-event-type="home_button_click" onClick={() => navigate("/about")}>Go to About</button>
-      <button className="track_btn" id="users_button" data-event-type="users_button_click" onClick={() => navigate("/users")}>Go to User</button>
+      <button className="track_btn" id="about_button" data-event-type="home_about_button_click" onClick={() => navigate("/about")}>Go to About</button>
+      <button className="track_btn" id="users_button" data-event-type="home_users_button_click" onClick={() => navigate("/users")}>Go to User</button>
     </div>
   );
 }
@@ -220,19 +197,17 @@ function About() {
   return (
     <div>
       <h2>About</h2>
-      <button className="track_btn" id="home_button" data-event-type="home_button_click" onClick={() => navigate("/")}>Go to Home</button>
+      <button className="track_btn" id="home_button" data-event-type="about_home_button_click" onClick={() => navigate("/home")}>Go to Home</button>
     </div>
   );
 }
 
 function Users() {
   const navigate = useNavigate();
-  return <div>
-    <h2>Users</h2>
-    {/* <p><Link to="/user/1">User 1</Link></p>
-    <p><Link to="/user/2">User 2</Link></p>
-    <p><Link to="/user/3">User 3</Link></p> */}
-    <button className="track_btn" id="user_button" data-event-type="user_button_click" onClick={() => navigate("/")}>Go to Home</button>
-  </div>
-    ;
+  return (
+    <div>
+      <h2>Users</h2>
+      <button className="track_btn" id="user_button" data-event-type="users_home_button_click" onClick={() => navigate("/home")}>Go to Home</button>
+    </div>
+  );
 }
